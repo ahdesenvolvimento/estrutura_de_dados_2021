@@ -5,15 +5,7 @@ class ArvoreBinaria():
         self.dir = direita
         self.esq = esquerda
         self.pai = pai
-    def inserir_valor(self, nodo, valor, contador):
-        if nodo.dado is None:
-            nodo.dado = valor
-        elif nodo.dado > valor:   
-            if nodo.esq is None:
-                nodo.esq = valor
-            else:
-                novo_nodo = ArvoreBinaria()
-                self.inserir_valor(novo_nodo.esq, valor, contador+1)
+    
     def __repr__(self):
         return "%s <- %s -> %s" %(self.esq and self.esq.dado, 
                                   self.dado,
@@ -58,50 +50,36 @@ def imprimir_arvore(raiz):
 def remover_no(raiz, valor):
     direita = procura_no(raiz, valor)
     if direita != None:
-        print(direita.pai, direita)
+      #  print(direita.pai, direita)
         if direita.pai.dado > valor:
             direita.pai.esq = None
-            print("é maior hehehehe direita", direita.pai.dado, valor)
+           # print("é maior hehehehe direita", direita.pai.dado, valor)
         else:
             direita.pai.dir = None
-            print("é menor heheh esquerda")
-class ArvoreBinaria2():
-    def __init__(self, raiz=None):
-        self.raiz = raiz
-    '''
-    def inserir(self, valor):
-        if self.raiz is None:
-            self.raiz = ArvoreBinaria(valor)
-        else:
-            self._inserir(valor, self.raiz)
-            
-            
-    def _inserir(self, valor, no):
-        if no.dado > valor:
-            if no.esq is not None:
-                self._inserir(valor, no.esq)
+            #print("é menor heheh esquerda")
+
+def altura(raiz):
+    if raiz == None or (raiz.dir == None and raiz.esq == None):
+        return 0
+    else:
+        direita = altura(raiz.dir)
+        print("direita", direita)
+        esquerda = altura(raiz.esq)
+        if direita != None and esquerda != None:
+            if direita > esquerda:
+                return 1 + altura(raiz.dir)
             else:
-                no.esq = ArvoreBinaria(valor)
-        else:
-            if no.dir is not None:
-                self._inserir(valor, no.dir)
-            else:
-                no.dir = ArvoreBinaria(valor)
-                
-    '''
+                return 1 + altura(raiz.esq)
 def main():
     arvore = ArvoreBinaria(3)
-    #arvore.inserir(2)
-   #arvore.inserir(1)
-   # print(arvore.raiz)
-   # raiz = ArvoreBinaria(20)
  
     for dado in [20, 60, 50, 70, 10, 30]:
         nodo = ArvoreBinaria(dado)
         
         insere(arvore, nodo)
        
-    
+    z = altura(arvore)
+    print(z)
     x = procura_no(arvore, 50)
     y = remover_no(arvore, 50)
     imprimir_arvore(arvore)
@@ -115,11 +93,5 @@ def main():
    # arvore.dir = ArvoreBinaria(30)
    # arvore.dir.esq = ArvoreBinaria(30)
     
-    #
-   # arvore.esq.esq = ArvoreBinaria(30)
-    #print(arvore.esq.esq)
- #   print(raiz)
-    
-   
-    print("Hello world");
+
 main()
