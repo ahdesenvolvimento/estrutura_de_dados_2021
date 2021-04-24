@@ -40,11 +40,27 @@ p_no inserir(p_no raiz, int valor){
     return raiz;
 }
 
-void visualizar_arv(p_no raiz){
+void pre_ordem(p_no raiz){
     if (raiz != NULL){
         printf("%d\n", raiz->dado);
-        visualizar_arv(raiz->dir);
-        visualizar_arv(raiz->esq);
+        pre_ordem(raiz->esq);
+        pre_ordem(raiz->dir);
+    }
+}
+
+void pos_ordem(p_no raiz){
+    if (raiz != NULL){
+        pos_ordem(raiz->esq);
+        pos_ordem(raiz->dir);
+        printf("%d\n", raiz->dado);
+    }
+}
+
+void in_ordem(p_no raiz){
+    if (raiz != NULL){
+        in_ordem(raiz->esq);
+        printf("%d\n", raiz->dado);
+        in_ordem(raiz->dir);
     }
 }
 
@@ -80,7 +96,11 @@ p_no criar_arvore(int x);
 
 p_no inserir(p_no raiz, int valor);
 
-void visualizar_arv(p_no raiz);
+void pre_ordem(p_no raiz);
+
+void pos_ordem(p_no raiz);
+
+void in_ordem(p_no raiz);
 
 p_no procurar_no( p_no raiz , int x);
 
@@ -94,7 +114,9 @@ void menu(){
     printf("3 - Altura da arvore\n");
     printf("4 - Total de nos\n");
     printf("5 - Procurar elemento na arvore\n");
-    printf("6 - Visualizar arvore\n");
+    printf("6 - Visualizar arvore pré-ordem\n");
+    printf("7 - Visualizar arvore pós-ordem\n");
+    printf("8 - Visualizar arvore in-ordem\n");
     printf("0 - Sair\n");
 }
 
@@ -139,7 +161,17 @@ int main(){
                 break;
             case 6:
                 printf("----------------ARVORE----------------\n");
-                visualizar_arv(arvore);
+                pre_ordem(arvore);
+                printf("--------------------------------------\n");
+                break;
+            case 7:
+                printf("----------------ARVORE----------------\n");
+                pos_ordem(arvore);
+                printf("--------------------------------------\n");
+                break;
+            case 8:
+                printf("----------------ARVORE----------------\n");
+                in_ordem(arvore);
                 printf("--------------------------------------\n");
                 break;
             case 0:
