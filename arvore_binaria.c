@@ -191,9 +191,20 @@ void percurso_em_largura(p_no raiz){
     printf("\n");
 }
 
+p_no busca(p_no raiz, int valor){
+    if (raiz == NULL || valor == raiz->dado){
+        return raiz;
+    }
+    if (valor < raiz->dado){
+        return busca(raiz->esq, valor);
+    }else{
+        return busca(raiz->dir, valor);
+    }
+}
 
 p_no criar_arvore(int x);
 
+p_no busca(p_no raiz, int valor);
 p_no inserir(p_no raiz, int valor);
 
 void pre_ordem(p_no raiz);
@@ -230,6 +241,7 @@ void menu(){
     printf("7 - Visualizar arvore pós-ordem\n");
     printf("8 - Visualizar arvore in-ordem\n");
     printf("9 - Percuso em largura\n");
+    printf("10 - Busca por valor\n");
     printf("0 - Sair\n");
 }
 
@@ -293,13 +305,18 @@ int main(){
                 percurso_em_largura(arvore);
                 printf("--------------------------------------\n");
                 break;
+            case 10:
+                printf("Digite o valor que deseja buscar: ");
+                scanf("%d", &valor);
+                p_no bus = busca(arvore, valor);
+                printf("%d valor\n", bus->dado);
+                break;
             case 0:
-
                 entrada = 0;
                 break;
         }
     }
     
     return 0;
-
+    
 }
