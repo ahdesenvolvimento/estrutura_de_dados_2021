@@ -5,7 +5,7 @@
 
 typedef struct No {
     int dado;
-    struct No *esq, * dir; /* * pai */
+    struct No *esq, * dir//, pai;
 } No;
 
 typedef No * p_no;
@@ -27,16 +27,19 @@ p_no criar_arvore(int x) {
     r-> dado = x;
     r-> esq = NULL;
     r-> dir = NULL;
+    //r->pai = NULL;
 
     return r;
 }
 
 p_no inserir(p_no raiz, int valor){
+   // p_no pai = raiz;
     if (raiz == NULL){
         raiz = (p_no)malloc(sizeof(No));
         raiz->dado = valor;
         raiz->esq = NULL;
         raiz->dir = NULL;
+        //raiz->pai = NULL
     }
     else if (valor > raiz->dado){
 
@@ -45,6 +48,40 @@ p_no inserir(p_no raiz, int valor){
     }else if (valor < raiz->dado){
 
         raiz->esq =  inserir(raiz->esq, valor);
+    }
+    return raiz;
+}
+
+p_no remover(p_no raiz, int valor){
+    //p_no x = raiz;
+    if (raiz == NULL){
+        return NULL;
+    }else if (raiz->dado > valor){
+        raiz->esq = remover(raiz->esq, valor);
+    }else if (raiz->dado < valor){
+        raiz->dir = remover(raiz->dir, valor);
+    }else{
+        if (raiz->esq == NULL && raiz->dir == NULL){
+            free(raiz);
+            raiz = NULL;
+        }else if (raiz->esq == NULL){
+            p_no x = raiz;
+            raiz = raiz->dir;
+            free(x);
+        }else if (raiz->dir == NULL){
+            p_no x = raiz;
+            raiz = raiz->esq;
+            free(x);
+        }else{
+            printf("entrei aqui para deletar o número 3\n");
+            p_no x = raiz->dir;
+            while (x->esq != NULL){
+                x = x->esq;
+            }
+            raiz->dado = x->dado;
+            x->dado = valor;
+            raiz->dir = remover(raiz->dir, valor);
+        }
     }
     return raiz;
 }
@@ -122,7 +159,7 @@ void enfileira(p_fila fila, p_no raiz){
    // if (p == NULL){
     //    printf('null\n');
    // }
-    
+
     p->no = raiz;
     p->seguinte = NULL;
     if (fila_vazia(fila)){
@@ -144,7 +181,7 @@ int tamanho(p_fila f){
         p = p->seguinte;
     }
     return contador;
-    
+
 }
 void mostrar_fila(p_fila f){
     elem *p;
@@ -162,7 +199,7 @@ void mostrar_fila(p_fila f){
 int desenfilerar(p_fila f){
     elem *p;
     if (!fila_vazia(f)){
-        
+
         p = f->inicio;
         f->inicio = p->seguinte;
         if (f->inicio == NULL){
@@ -220,6 +257,7 @@ int numero_nos(p_no raiz);
 int altura(p_no raiz);
 
 void percurso_em_largura(p_no raiz);
+p_no remover(p_no raiz, int valor);
 
 p_fila criar_fila();
 bool fila_vazia(p_fila f);
@@ -242,16 +280,19 @@ void menu(){
     printf("8 - Visualizar arvore in-ordem\n");
     printf("9 - Percuso em largura\n");
     printf("10 - Busca por valor\n");
+    printf("11 - Criar arvore e adicionar numerosz\n");
+    printf("12 - Remover elemento\n");
     printf("0 - Sair\n");
 }
 
 void menu();
 
 int main(){
- 
+
     int entrada = 1;
     while (entrada != 0){
-        int valor, numero, alt, *proc;
+        int valor, numero, alt;//, *proc;//, y[9] = {13, 14, 10, 12, 3, 7, 4, 5, 1};
+        p_no arvore;
         menu();
         printf("Selecione uma opcao abaixo: \n");
         scanf("%d", &valor);
@@ -278,12 +319,12 @@ int main(){
             case 5:
                 printf("Digite o valor que deseja procurar: ");
                 scanf("%d", &valor);
-                proc = procurar_no(arvore, valor);
-                if (proc == NULL){
-                    printf("Valor %d nao esta na arvore\n", valor);
-                }else{
-                    printf("Valor %d foi encontrado na arvore\n", valor);
-                }
+              //  proc = procurar_no(arvore, valor);
+               // if (proc == NULL){
+               //     printf("Valor %d nao esta na arvore\n", valor);
+              //  }else{
+              //      printf("Valor %d foi encontrado na arvore\n", valor);
+             //   }
                 break;
             case 6:
                 printf("----------------ARVORE----------------\n");
@@ -311,12 +352,26 @@ int main(){
                 p_no bus = busca(arvore, valor);
                 printf("%d valor\n", bus->dado);
                 break;
+            case 11:
+                arvore = criar_arvore(8);
+                int y[9] = {13, 14, 10, 12, 3, 7, 4, 5, 1};
+                for (int i = 0;i < 9;i++){
+                    inserir(arvore, y[i]);
+                }
+                printf("-----------------------------------------\n");
+                printf("Arvore criada com sucesso!\n");
+                break;
+            case 12:
+                printf("Digite o valor que deseja remover: ");
+                scanf("%d", &valor);
+                remover(arvore, valor);;
+                break;
             case 0:
                 entrada = 0;
                 break;
         }
     }
-    
+
     return 0;
-    
+
 }
